@@ -1,0 +1,6 @@
+@LetsFish.Server_HostAddress = http://localhost:5073
+
+GET {{LetsFish.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

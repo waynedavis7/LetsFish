@@ -1,0 +1,71 @@
+﻿@page "/captains"
+@using LetsFish.Application.Domain.Entities
+@inject HttpClient Http
+
+@if (captains == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{@*
+    <table class="table">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>last Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var captain in captains)
+            {
+                <tr>
+                    <td>@captain.FirstName</td>
+                    <td>@captain.LastName</td>
+                </tr>
+            }
+        </tbody>
+    </table> *@
+
+    <div class="container">
+        <div class="row">
+            <MudDataGrid Items="@captainsQuery" Dense Striped ReadOnly="false" EditMode="DataGridEditMode.Form">
+                <ToolBarContent>
+                    <MudText Typo="Typo.h6">Captains</MudText>
+                    <MudSpacer />
+                </ToolBarContent>
+                <Columns>
+                    <PropertyColumn Property="x => x.FirstName" />
+                    <PropertyColumn Property="x => x.LastName" />
+                    <PropertyColumn Property="x => x.Email" />
+                    <PropertyColumn Property="x => x.Phone" />
+                    <PropertyColumn Property="x => x.Inactive" />
+                </Columns>
+            </MudDataGrid>
+        </div>
+    </div>
+}
+@code {
+
+}
+
+@code {
+    private Captain[]? captains;
+    private IQueryable<Captain> captainsQuery;
+    private Captain captain = new Captain();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await Http.GetFromJsonAsync<Result<List<Captain>>>("api/v1/Captains");
+
+        captains = response.Data.ToArray();
+        captainsQuery = response.Data.AsQueryable();
+
+        Console.WriteLine(response);
+    }
+
+    async Task AddCaptain()
+    {
+        // var response = await Http.PostAsJsonAsync("api/v1/Captains", captain);
+        // Console.WriteLine(response);
+    }
+}
