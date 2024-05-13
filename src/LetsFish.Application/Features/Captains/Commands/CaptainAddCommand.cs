@@ -2,11 +2,11 @@
 
 namespace LetsFish.Application.Features.Captains.Commands;
 
-public  class CaptainAddCommand : ICommand<int> {
+public  class AnglerAddCommand : ICommand<int> {
     public Captain Captain { get; set; }
 }
 
-internal class CaptainAddCommandHandler : ICommandHandler<CaptainAddCommand, int>
+internal class CaptainAddCommandHandler : ICommandHandler<AnglerAddCommand, int>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -17,7 +17,7 @@ internal class CaptainAddCommandHandler : ICommandHandler<CaptainAddCommand, int
         _mapper = mapper;
     }
 
-    public async Task<IResult<int>> Handle(CaptainAddCommand request, CancellationToken cancellationToken)
+    public async Task<IResult<int>> Handle(AnglerAddCommand request, CancellationToken cancellationToken)
     {
         if (request.Captain.CaptainId > 0)
         {

@@ -4,6 +4,7 @@ internal class UnitOfWork : IDisposable, IUnitOfWork
 {
     private readonly LetsFishContext _letsFishContext;
     private GenericRespository<Captain>? _captainRepository;
+    private GenericRespository<Angler>? _anglerRepository;
 
     public UnitOfWork(LetsFishContext letsFishContext)
     {
@@ -19,6 +20,18 @@ internal class UnitOfWork : IDisposable, IUnitOfWork
                 _captainRepository = new GenericRespository<Captain>(_letsFishContext);
             }
             return _captainRepository;
+        }
+    }
+
+    public GenericRespository<Angler> AnglerRepository
+    {
+        get
+        {
+            if (_anglerRepository == null)
+            {
+                _anglerRepository = new GenericRespository<Angler>(_letsFishContext);
+            }
+            return _anglerRepository;
         }
     }
 
