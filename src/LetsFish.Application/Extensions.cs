@@ -11,7 +11,8 @@ static public class Extensions
         services.AddDbContext<LetsFishContext>(options => options.UseSqlServer(ConnectionString));
         services.AddTransient<IUnitOfWork, UnitOfWork>();
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
-        services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+        services.AddAutoMapper(typeof(Extensions).Assembly);
+
 
         return services;
     }

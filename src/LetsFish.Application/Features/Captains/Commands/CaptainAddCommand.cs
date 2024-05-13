@@ -9,15 +9,25 @@ public  class CaptainAddCommand : ICommand<int> {
 internal class CaptainAddCommandHandler : ICommandHandler<CaptainAddCommand, int>
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
-    public CaptainAddCommandHandler(IUnitOfWork unitOfWork)
+    public CaptainAddCommandHandler(IUnitOfWork unitOfWork , IMapper mapper)
     {
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
     public async Task<IResult<int>> Handle(CaptainAddCommand request, CancellationToken cancellationToken)
     {
-        await _unitOfWork.CaptainRepository.InsertAsync(request.Captain);   
+        if (request.Captain.CaptainId > 0)
+        {
+            _unitOfWork.CaptainRepository.Update(request.Captain);
+        }
+        else
+        {
+            await _unitOfWork.CaptainRepository.InsertAsync(request.Captain);
+        }        
+
         await _unitOfWork.Save();
 
         return await Result<int>.SuccessAsync(request.Captain.CaptainId);

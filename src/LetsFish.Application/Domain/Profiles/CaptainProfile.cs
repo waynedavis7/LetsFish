@@ -2,7 +2,7 @@
 
 internal class CaptainProfile : Profile
 {
-    protected CaptainProfile()
+    public CaptainProfile()
     {
         CreateMap<Captain, Captain>().ReverseMap();
     }

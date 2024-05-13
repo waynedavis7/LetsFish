@@ -13,6 +13,7 @@ var config = new ConfigurationBuilder()
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddAutoMapper(typeof(Program).Assembly);   
 
 builder.Services.AddApiVersioning(options =>
 {
