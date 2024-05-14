@@ -4,7 +4,7 @@
 public class AnglersController : BaseApiController<AnglersController>
 {
     [HttpGet]
-    public async Task<IActionResult> GetCaptains()
+    public async Task<IActionResult> GetAnglers()
     {
         var captains = await _mediator.Send(new Application.Features.Anglers.Queries.AnglersQuery());
         return Ok(captains);

@@ -1,9 +1,9 @@
-﻿@page "/anglers"
+﻿@page "/teams"
 @using LetsFish.Application.Domain.Entities
 @inject HttpClient Http
 @inject ISnackbar Snackbar
 
-@if (anglers == null)
+@if (teams == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -11,7 +11,7 @@ else
 {
     <div class="container">
         <div class="row">
-            <MudDataGrid Items="@angulersFilteredQuery" T="Angler" Dense Striped ReadOnly="false" CommittedItemChanges="@CommittedItemChanges">
+            <MudDataGrid Items="@teamsFilteredQuery" T="Team" Dense Striped ReadOnly="false" CommittedItemChanges="@CommittedItemChanges">
                 <ToolBarContent>
                     <MudButton DisableElevation Variant="Variant.Filled" Color="Color.Primary" OnClick="(() => AddNew())" StartIcon="@Icons.Material.Filled.Add" IconColor="Color.Surface">Add</MudButton>
                     <MudText Typo="Typo.h6">Anglers</MudText>
@@ -22,11 +22,8 @@ else
                     </MudFocusTrap>
                 </ToolBarContent>
                 <Columns>
-                    <PropertyColumn Property="x => x.FirstName" Title="First Name" />
-                    <PropertyColumn Property="x => x.LastName" Title="Last Name"/>
-                    <PropertyColumn Property="x => x.Email" />
-                    <PropertyColumn Property="x => x.Phone" />
-                    <PropertyColumn Property="x => x.GraduationYear" Title="Grad Year" />
+                    <PropertyColumn Property="x => x.TeamId " />
+                    <PropertyColumn Property="x => x.TeamName" />
                     <PropertyColumn Property="x => x.Inactive">
                         <EditTemplate>
                             <MudCheckBox @bind-Value="context.Item.Inactive" Label="Inactive" />
@@ -50,24 +47,24 @@ else
 @code {
     private string _searchString = "";
 
-    private Angler[]? anglers;
-    private IQueryable<Angler>? angulersQuery;
-    private IQueryable<Angler>? angulersFilteredQuery;
-    private Angler _angler= new Angler();
+    private Team[]? teams;
+    private IQueryable<Team>? teamsQuery;
+    private IQueryable<Team>? teamsFilteredQuery;
+    private Team _team = new Team();
 
     protected override async Task OnInitializedAsync()
     {
-        var response = await Http.GetFromJsonAsync<Result<List<Angler>>>("api/v1/Anglers");
+        var response = await Http.GetFromJsonAsync<Result<List<Team>>>("api/v1/Teams");
 
         if (response == null || response.Data is null)
         {
-            Snackbar.Add($"Error Loading Anglers", Severity.Error);
+            Snackbar.Add($"Error Loading Teams", Severity.Error);
             return;
         }
 
-        anglers = response.Data.ToArray();
-        angulersQuery = response.Data.AsQueryable();
-        angulersFilteredQuery = angulersQuery;
+        teams = response.Data.ToArray();
+        teamsQuery = response.Data.AsQueryable();
+        teamsFilteredQuery = teamsQuery;
     }
 
     private void SearchTextChanged(KeyboardEventArgs e)
@@ -77,29 +74,26 @@ else
 
     private void GetCaptainsAsync()
     {
-        if (angulersQuery != null)
+        if (teamsQuery != null)
         {
-            angulersFilteredQuery = angulersQuery.Where(x => x.FirstName.ToLower().Contains(_searchString.ToLower()) ||
-                                                        x.LastName.ToLower().Contains(_searchString.ToLower()) ||
-                                                        x.Email.ToLower().Contains(_searchString.ToLower()) ||
-                                                        x.Phone.Contains(_searchString));
+            teamsFilteredQuery = teamsQuery.Where(x => x.TeamName.ToLower().Contains(_searchString.ToLower()));
             StateHasChanged();
         }
 
     }
 
-    async Task CommittedItemChanges(Angler item)
+    async Task CommittedItemChanges(Team item)
     {
-        var response = await Http.PostAsJsonAsync("api/v1/Anglers", item);
-        Snackbar.Add($"Angler saved", Severity.Normal);
+        var response = await Http.PostAsJsonAsync("api/v1/Teams", item);
+        Snackbar.Add($"Team saved", Severity.Normal);
     }
 
     void AddNew()
     {
-        if (angulersQuery != null)
+        if (teamsQuery!= null)
         {
-            angulersQuery = angulersQuery.Append(new Angler());
-            angulersFilteredQuery = angulersQuery.Where(x => x.AnglerId == 0);
+            teamsQuery = teamsQuery.Append(new Team());
+            teamsFilteredQuery = teamsQuery.Where(x => x.TeamId == 0);
             StateHasChanged();
         }
     }

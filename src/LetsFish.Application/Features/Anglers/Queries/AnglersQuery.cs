@@ -4,11 +4,11 @@ namespace LetsFish.Application.Features.Anglers.Queries;
 
 public class AnglersQuery : IQuery<IEnumerable<Angler>> { }
 
-internal class CaptainsQueryHandler : IQueryHandler<AnglersQuery, IEnumerable<Angler>>
+internal class AnglersQueryHandler : IQueryHandler<AnglersQuery, IEnumerable<Angler>>
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public CaptainsQueryHandler(IUnitOfWork unitOfWork)
+    public AnglersQueryHandler(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }

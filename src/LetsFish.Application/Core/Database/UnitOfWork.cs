@@ -5,6 +5,7 @@ internal class UnitOfWork : IDisposable, IUnitOfWork
     private readonly LetsFishContext _letsFishContext;
     private GenericRespository<Captain>? _captainRepository;
     private GenericRespository<Angler>? _anglerRepository;
+    private GenericRespository<Team>? _teamRepository;
 
     public UnitOfWork(LetsFishContext letsFishContext)
     {
@@ -34,6 +35,19 @@ internal class UnitOfWork : IDisposable, IUnitOfWork
             return _anglerRepository;
         }
     }
+
+    public GenericRespository<Team> TeamRepository
+    {
+        get
+        {
+            if (_teamRepository == null)
+            {
+                _teamRepository = new GenericRespository<Team>(_letsFishContext);
+            }
+            return _teamRepository;
+        }
+    }
+
 
     public async Task Save()
     {
