@@ -1,4 +1,4 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@* <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">LetsFish.Wasm</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -31,7 +31,18 @@
             </NavLink>
         </div>
     </nav>
-</div>
+</div> *@
+
+
+<MudNavMenu>
+
+    <MudListSubheader Class="mt-2 mb-n2">Master Files</MudListSubheader>
+    <MudNavLink Href="" Icon="@Icons.Material.Filled.Home" Text="Home">Home</MudNavLink>
+    <MudNavLink Href="anglers" Icon="@Icons.Material.Filled.Person" Text="Anglers">Anglers</MudNavLink>
+    <MudNavLink Href="captains" Icon="@Icons.Material.Filled.Person" Text="Captains">Captains</MudNavLink>
+    <MudNavLink Href="teams" Icon="@Icons.Material.Filled.Person" Text="Teams">Teams</MudNavLink>
+
+</MudNavMenu>
 
 @code {
     private bool collapseNavMenu = true;

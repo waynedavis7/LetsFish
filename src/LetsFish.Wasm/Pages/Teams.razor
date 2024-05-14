@@ -3,6 +3,15 @@
 @inject HttpClient Http
 @inject ISnackbar Snackbar
 
+
+<style>
+    .mud-table-container {
+        overflow: auto;
+    }
+</style>
+
+<LetsFish.Wasm.Components.LetsFishTitle Title="Teams" Description="Manage Teams"></LetsFish.Wasm.Components.LetsFishTitle>
+
 @if (teams == null)
 {
     <p><em>Loading...</em></p>
@@ -14,7 +23,6 @@ else
             <MudDataGrid Items="@teamsFilteredQuery" T="Team" Dense Striped ReadOnly="false" CommittedItemChanges="@CommittedItemChanges">
                 <ToolBarContent>
                     <MudButton DisableElevation Variant="Variant.Filled" Color="Color.Primary" OnClick="(() => AddNew())" StartIcon="@Icons.Material.Filled.Add" IconColor="Color.Surface">Add</MudButton>
-                    <MudText Typo="Typo.h6">Anglers</MudText>
                     <MudSpacer />
                     <MudFocusTrap Disabled="false" DefaultFocus="DefaultFocus.FirstChild">
                         <MudTextField @bind-Value="_searchString" OnKeyUp="@SearchTextChanged" Immediate="true"
