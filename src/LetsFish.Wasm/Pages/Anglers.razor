@@ -3,7 +3,6 @@
 @inject HttpClient Http
 @inject ISnackbar Snackbar
 
-
 <style>
     .mud-table-container {
         overflow: auto;
@@ -82,10 +81,10 @@ else
 
     private void SearchTextChanged(KeyboardEventArgs e)
     {
-        GetCaptainsAsync();
+        GetAngulers();
     }
 
-    private void GetCaptainsAsync()
+    private void GetAngulers()
     {
         if (angulersQuery != null)
         {
@@ -112,5 +111,5 @@ else
             angulersFilteredQuery = angulersQuery.Where(x => x.AnglerId == 0);
             StateHasChanged();
         }
-    }
+    }   
 }

@@ -20,13 +20,13 @@ else
     <div class="container">
         <div class="row">
             <MudDataGrid Items="@captainsFilteredQuery" T="Captain" Dense Striped ReadOnly="false" CommittedItemChanges="@CommittedItemChanges">
-                <ToolBarContent>
-                    <MudButton DisableElevation Variant="Variant.Filled" Color="Color.Primary" OnClick="(() => AddNew())" StartIcon="@Icons.Material.Filled.Add" IconColor="Color.Surface">Add</MudButton>
-                    <MudSpacer />
+                <ToolBarContent>                   
                     <MudFocusTrap Disabled="false" DefaultFocus="DefaultFocus.FirstChild">
                         <MudTextField @bind-Value="_searchString" OnKeyUp="@SearchTextChanged" Immediate="true"
                                       Placeholder="Search for Captains" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0 mb-3"></MudTextField>
                     </MudFocusTrap>
+                    <MudSpacer />
+                    <MudButton DisableElevation Variant="Variant.Filled" Color="Color.Primary" OnClick="(() => AddNew())" StartIcon="@Icons.Material.Filled.Add" IconColor="Color.Surface">Add</MudButton>
                 </ToolBarContent>
                 <Columns>
                     <PropertyColumn Property="x => x.FirstName" />
