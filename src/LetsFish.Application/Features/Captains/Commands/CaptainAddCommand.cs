@@ -2,7 +2,8 @@
 
 namespace LetsFish.Application.Features.Captains.Commands;
 
-public  class AnglerAddCommand : ICommand<int> {
+public class AnglerAddCommand : ICommand<int>
+{
     public Captain Captain { get; set; }
 }
 
@@ -11,7 +12,7 @@ internal class CaptainAddCommandHandler : ICommandHandler<AnglerAddCommand, int>
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public CaptainAddCommandHandler(IUnitOfWork unitOfWork , IMapper mapper)
+    public CaptainAddCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
@@ -26,7 +27,7 @@ internal class CaptainAddCommandHandler : ICommandHandler<AnglerAddCommand, int>
         else
         {
             await _unitOfWork.CaptainRepository.InsertAsync(request.Captain);
-        }        
+        }
 
         await _unitOfWork.Save();
 

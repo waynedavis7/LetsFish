@@ -15,5 +15,5 @@ public class Team : IDbRecord
     public DateTime ModifiedDate { get; set; }
     public bool Inactive { get; set; }
 
-    public virtual ICollection<Angler>? Anglers { get; set; } 
+    public virtual ICollection<Angler>? Anglers { get; set; }
 }

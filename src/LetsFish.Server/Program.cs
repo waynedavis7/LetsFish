@@ -1,8 +1,16 @@
 using Asp.Versioning;
+using LetsFish.Server.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddIdentityApiEndpoints<IdentityUser>()
+    .AddEntityFrameworkStores<LetsFishServerContext>();
+
+var connectionString = builder.Configuration.GetConnectionString("LetsFishServerContextConnection") ?? throw new InvalidOperationException("Connection string 'LetsFishServerContextConnection' not found.");
+
+builder.Services.AddDbContext<LetsFishServerContext>(options => options.UseSqlServer(connectionString));
 
 var config = new ConfigurationBuilder()
                  .SetBasePath(Directory.GetCurrentDirectory())
@@ -13,7 +21,7 @@ var config = new ConfigurationBuilder()
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
-builder.Services.AddAutoMapper(typeof(Program).Assembly);   
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 builder.Services.AddApiVersioning(options =>
 {
@@ -31,6 +39,8 @@ builder.Services.AddApiVersioning(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddLetsFishApplication(config.GetConnectionString("LetsFishDatabase")!);
+builder.Services.AddDbContext<LetsFishServerContext>(options => options.UseSqlServer(config.GetConnectionString("LetsFishDatabase")!));
+builder.Services.AddAuthorization();
 
 const string policyName = "CorsPolicy";
 builder.Services.AddCors(options =>
@@ -63,11 +73,19 @@ app.UseStaticFiles();
 app.UseAuthorization();
 app.MapRazorPages();
 app.MapControllers();
-app.MapFallbackToFile("index.html");    
+app.MapFallbackToFile("index.html");
+
+app.MapIdentityApi<IdentityUser>();
 
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<LetsFishContext>();
+    db.Database.Migrate();
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<LetsFishServerContext>();
     db.Database.Migrate();
 }
 
